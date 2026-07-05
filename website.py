@@ -1,26 +1,24 @@
-import json
 import streamlit as st
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# 1. సీక్రెట్స్ నుండి డేటా తీసుకోండి
-secrets_data = st.secrets["FIREBASE_JSON"]
-
-# 2. ఒకవేళ అది స్ట్రింగ్ అయితే, JSON లోడ్ చేయండి
-if isinstance(secrets_data, str):
-    key_dict = json.loads(secrets_data)
-else:
-    key_dict = secrets_data
-
-# 3. private_key లో \n లేకపోతే దాన్ని సరిచేయండి
-if "private_key" in key_dict and "\\n" not in key_dict["private_key"]:
-    key_dict["private_key"] = key_dict["private_key"].replace("\n", "\\n")
-
-# 4. Firebase ఇనిషియలైజేషన్
+# నేరుగా st.secrets నుండి డేటా తీసుకోవచ్చు
 if not firebase_admin._apps:
-    cred = credentials.Certificate(key_dict)
+    cred = credentials.Certificate({
+        "type": st.secrets["type"],
+        "project_id": st.secrets["project_id"],
+        "private_key_id": st.secrets["private_key_id"],
+        "private_key": st.secrets["private_key"].replace("\\n", "\n"),
+        "client_email": st.secrets["client_email"],
+        "client_id": st.secrets["client_id"],
+        "auth_uri": st.secrets["auth_uri"],
+        "token_uri": st.secrets["token_uri"],
+        "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+        "client_x509_cert_url": st.secrets["client_x509_cert_url"]
+    })
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://social-aggregator-automation-default-rtdb.firebaseio.com/'
     })
 
 db = firestore.client()
+st.title("ప్రజా వార్తలు")
