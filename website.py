@@ -6,8 +6,7 @@ if not firebase_admin._apps:
     cred = credentials.Certificate({
         "type": st.secrets["type"],
         "project_id": st.secrets["project_id"],
-        "private_key_id": st.secrets["private_key_id"],
-        "private_key": st.secrets["private_key"],
+       "private_key": st.secrets["private_key"].replace("\\n", "\n"),
         "client_email": st.secrets["client_email"],
         "client_id": st.secrets["client_id"],
         "auth_uri": st.secrets["auth_uri"],
