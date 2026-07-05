@@ -1,10 +1,9 @@
 import streamlit as st
 import firebase_admin
-from firebase    _admin    import    credentials, firestore
+from firebase_admin import credentials, firestore
 
-# ఇక్కడ అంచున ఎలాంటి స్పేస్ ఉండకూడదు
 if not firebase_admin._apps:
-    cred = ... credentials.Certificate({
+    cred = credentials.Certificate({
         "type": st.secrets["type"],
         "project_id": st.secrets["project_id"],
         "private_key_id": st.secrets["private_key_id"],
